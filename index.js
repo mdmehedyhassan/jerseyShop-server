@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const MongoClient = require('mongodb').MongoClient;
+const ObjectID = require('mongodb').ObjectID;
 
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -37,6 +38,14 @@ client.connect(err => {
         res.send(result.insertedCount > 0)
     })
   })
+
+  app.delete('manageJerseyDelete/:id', (req, res) => {
+    const id = ObjectID(req.params.id);
+    console.log('delete this', id);
+    jerseyCollection.findOneAndDelete({_id: id})
+    .then(documents => res.send(!!documents.value))
+  })
+
 //   client.close();
 });
 
